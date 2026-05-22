@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Layout } from "@/components/site/Layout";
 import { Search, MapPin, BedDouble, Bath, Maximize, Heart, ArrowUpRight, ShieldCheck, Award, Building2, Sparkles, Calculator, FileText, Scale, Star } from "lucide-react";
 import { api } from "@/lib/api";
+import { normalizeUploadUrl } from "@/lib/utils";
 import p1 from "@/assets/prop-1.jpg";
 import p2 from "@/assets/prop-2.jpg";
 import p3 from "@/assets/prop-3.jpg";
@@ -62,7 +63,7 @@ function Home() {
         }
 
         const normalized = items.map((item) => ({
-          img: item.img ?? item.main_image ?? sampleProperties[0].img,
+          img: normalizeUploadUrl(item.main_image ?? item.img) ?? sampleProperties[0].img,
           title: item.title ?? "Property",
           loc: item.location ?? item.loc ?? "Unknown",
           price: typeof item.price === "number" ? `R ${item.price.toLocaleString()}` : item.price ?? "R 0",
@@ -88,7 +89,7 @@ function Home() {
                 id: String(agent.id),
                 name: agent.name ?? agent.full_name ?? 'Agent',
                 role: agent.position ?? 'Agent',
-                img: agent.profileImage ?? agent.image ?? sampleProperties[0].img,
+                img: normalizeUploadUrl(agent.profileImage ?? agent.image) ?? sampleProperties[0].img,
                 rating: Math.min(5, Math.max(3, 3 + (Number(agent.listingsCount) || 0) / 5)),
                 reviews: 12 + (Number(agent.listingsCount) || 0) * 3,
               }))
