@@ -42,6 +42,7 @@ import {
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import { io } from "socket.io-client";
+import { normalizeUploadUrl } from "@/lib/utils";
 import { kindMeta, type Notification, type NotifKind } from "@/lib/mock-notifications";
 
 export const Route = createFileRoute("/admin")({
@@ -214,7 +215,7 @@ function AdminDashboard() {
         : property.price ?? "Contact for price",
     status: property.status ?? "available",
     description: property.description ?? "",
-    image: property.main_image ?? property.image ?? null,
+    image: normalizeUploadUrl(property.main_image ?? property.image ?? null),
     postedAt: property.created_at
       ? new Date(property.created_at).toLocaleDateString()
       : property.postedAt ?? "Today",

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Layout, PageHeader } from "@/components/site/Layout";
 import { MapPin, BedDouble, Bath, Maximize, Heart, Search } from "lucide-react";
 import { api } from "@/lib/api";
+import { normalizeUploadUrl } from "@/lib/utils";
 import p1 from "@/assets/prop-1.jpg";
 
 export const Route = createFileRoute("/properties")({ component: Page, head: () => ({ meta: [{ title: "Properties — Light Vision Property" }] }) });
@@ -11,7 +12,7 @@ const defaultProperties: Array<{ img: string; title: string; loc: string; price:
 
 function normalizeProperty(item: any) {
   return {
-    img: item.main_image ?? item.img ?? p1,
+    img: normalizeUploadUrl(item.main_image ?? item.img ?? p1),
     title: item.title ?? item.address ?? "Property",
     loc: item.location ?? item.city ?? item.address ?? "Unknown location",
     price: typeof item.price === "number" ? `R ${item.price.toLocaleString()}` : item.price ?? "R 0",
